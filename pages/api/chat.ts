@@ -103,10 +103,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     const messagesData = await messagesRes.json();
-    const assistantReply = messagesData.data.find((msg: any) => msg.role === "assistant");
-
+    const assistantReply = messagesData.data.find(
+      (msg: { role: string; content: { text?: { value: string }[] } }) => msg.role === "assistant"
+    );
+    
     console.log("✅ Respuesta del asistente:", assistantReply?.content[0]?.text?.value);
-
+    
     return res.status(200).json({
       reply: {
         role: "assistant",
@@ -114,8 +116,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       threadId: thread_id,
     });
-  } catch (err: any) {
-    console.error("❌ Error capturado:", err);
+  } catch {
+    console.error("❌ Error capturado");
     return res.status(500).json({ error: "Error al comunicar con el asistente." });
-  }
+  }  
 }
