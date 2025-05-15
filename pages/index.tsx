@@ -60,7 +60,7 @@ export default function Home() {
         ]);
         setThreadId(data.threadId);
       }
-    } catch (err) {
+    } catch {
       setIsLoading(false); // ⚠️ Ocultar loader también si hay error
       setMessages([
         ...updatedMessages,
